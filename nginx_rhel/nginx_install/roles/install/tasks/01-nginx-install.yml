@@ -1,0 +1,67 @@
+---
+- name: Copy nginx code file to clients
+  copy: src=nginx-{{ nginx_version }}.tar.gz dest=/tmp/ 
+        owner=root group=root
+
+- name: Copy pcre code file to clients
+  copy: src=pcre-{{ pcre_version }}.tar.gz dest=/tmp/ 
+        owner=root group=root
+
+
+- name: Copy openssl code file to clients
+  copy: src=openssl-{{ openssl_version }}f.tar.gz dest=/tmp/ 
+        owner=root group=root
+
+- name: Copy zlib code file to clients
+  copy: src=zlib-{{ zlib_version }}.tar.gz dest=/tmp/ 
+        owner=root group=root
+
+- name: Copy master code file to clients
+  copy: src=master.tar.gz dest=/tmp/ 
+        owner=root group=root
+
+- name: Copy nginx_upstream_check_module-master.zip code file to clients
+  copy: src=nginx_upstream_check_module-master.zip dest=/tmp/ 
+        owner=root group=root
+
+- name: Uncompression nginx-{{ nginx_version }}.tar.gz
+  shell: tar zxf /tmp/nginx-{{ nginx_version }}.tar.gz -C /usr/local/src/
+
+- name: Uncompression nginx_upstream_check_module-master
+  shell: unzip /tmp/nginx_upstream_check_module-master.zip -d /usr/local/src/
+
+- name: Uncompression pcre-{{ pcre_version }}.tar.gz
+  shell: tar zxf /tmp/pcre-{{ pcre_version }}.tar.gz -C /usr/local/src/
+
+
+- name: Uncompression openssl-{{ openssl_version }}f.tar.gz
+  shell: tar zxf /tmp/openssl-{{ openssl_version }}f.tar.gz -C /usr/local/src/
+
+- name: Uncompression zlib-{{ zlib_version }}.tar.gz
+  shell: tar zxf /tmp/zlib-{{ zlib_version }}.tar.gz -C /usr/local/src/
+
+- name: Uncompression master.tar.gz
+  shell: tar zxf /tmp/master.tar.gz -C /usr/local/src/
+
+- name: mv /usr/local/src/nginx-goodies-nginx-sticky-module-ng-08a395c66e42 nginx-sticky
+  shell: mv /usr/local/src/{nginx-goodies-nginx-sticky-module-ng-08a395c66e42,nginx-sticky}
+
+- name: patch nginx_upstream_check_module-master
+  shell:  patch -p1 < ../nginx_upstream_check_module-master/check_1.5.12+.patch
+  args:
+    chdir: /usr/local/src/nginx-{{nginx_version}}/
+
+- name: Configure the install nginx
+  command: ./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --add-module=/usr/local/src/nginx_upstream_check_module-master --add-module=/usr/local/src/nginx-sticky  --with-pcre=/usr/local/src/pcre-{{pcre_version}} --with-zlib=/usr/local/src/zlib-{{zlib_version}}
+  args:
+    chdir: /usr/local/src/nginx-{{nginx_version}}/
+
+- name: Make nginx
+  command: make
+  args:
+    chdir: /usr/local/src/nginx-{{nginx_version}}/
+
+- name: Make install nginx
+  command: make install 
+  args:
+    chdir: /usr/local/src/nginx-{{nginx_version}}/

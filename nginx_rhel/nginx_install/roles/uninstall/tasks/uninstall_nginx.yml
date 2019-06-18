@@ -1,0 +1,7 @@
+---
+- name: stop nginx service
+  shell: pkill -9 nginx
+
+- name: delete nginx  basedir
+  shell: rm -rf {{ nginx_dir }}
+

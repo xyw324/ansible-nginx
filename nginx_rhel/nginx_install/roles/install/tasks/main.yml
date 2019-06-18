@@ -1,0 +1,4 @@
+---
+- include: 01-nginx-install.yml
+- include: 02-start-nginx.yml
+- include: 03-delete-tar.gz.yml

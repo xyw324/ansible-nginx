@@ -1,0 +1,5 @@
+nginx_dir: /usr/local/nginx
+nginx_version: 1.6.3
+pcre_version: 8.38
+zlib_version: 1.2.11
+openssl_version: 1.1.0

@@ -1,0 +1,18 @@
+---
+- name: Delete nginx code file
+  shell: rm -f /tmp/nginx-{{ nginx_version}}.tar.gz
+
+- name: Delete pcre code file
+  shell: rm -f /tmp/pcre-{{ pcre_version}}.tar.gz
+
+- name: Delete openssl code file
+  shell: rm -f /tmp/openssl-{{ openssl_version}}f.tar.gz 
+
+- name: Delete zlib code file
+  shell: rm -f /tmp/zlib-{{ zlib_version}}.tar.gz
+
+- name: Delete master code file
+  shell: rm -f /tmp/master.tar.gz
+
+- name: Delete nginx_upstream_check_module-master.zip code file
+  shell: rm -f /tmp/nginx_upstream_check_module-master.zip

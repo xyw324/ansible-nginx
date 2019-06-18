@@ -1,0 +1,7 @@
+---
+
+- name: Start nginx service
+  shell: /usr/local/nginx/sbin/nginx
+
+- name: Add boot start nginx service
+  shell: echo "/usr/local/nginx/sbin/nginx" >> /etc/rc.local
